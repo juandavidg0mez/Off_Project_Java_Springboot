@@ -2,6 +2,8 @@ package com.projectmain.project.domain.entity;
 
 
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -9,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 
 @Entity
@@ -33,9 +36,11 @@ public class Surveys {
     @Embedded
     Audit audit = new Audit();
 
-    @ManyToMany(mappedBy = "surveys")
+    @ManyToMany(mappedBy = "surveys" , cascade = CascadeType.ALL)
     private List<categories_catalog> categories_catalogs;
 
+    @OneToMany(mappedBy = "surveys", cascade = CascadeType.ALL)
+    private List<Chapters> chapters;
     
     public Surveys() {
     }

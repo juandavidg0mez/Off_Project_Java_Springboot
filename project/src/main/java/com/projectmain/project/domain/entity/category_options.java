@@ -3,6 +3,10 @@ package com.projectmain.project.domain.entity;
 
 
 
+
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class category_options {
@@ -19,15 +24,19 @@ public class category_options {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "oprions_id")
+    @JoinColumn(name = "options_id")
     private Options options;
 
     @ManyToOne
     @JoinColumn(name = "categories_catalog")
     private categories_catalog Catalog_categories;
 
+
     @Embedded
     Audit audit = new Audit();
+
+    @OneToMany(mappedBy = "Category_Options", cascade =  CascadeType.ALL)
+    private List<Question_Categories> question_Categories;
 
     public Long getId() {
         return id;
@@ -60,10 +69,16 @@ public class category_options {
     public void setAudit(Audit audit) {
         this.audit = audit;
     }
-    
 
+    public List<Question_Categories> getQuestion_Categories() {
+        return question_Categories;
+    }
 
+    public void setQuestion_Categories(List<Question_Categories> question_Categories) {
+        this.question_Categories = question_Categories;
+    }
 
+  
 
 }
 
