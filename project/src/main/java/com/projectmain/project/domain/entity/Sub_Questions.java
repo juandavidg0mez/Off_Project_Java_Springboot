@@ -1,6 +1,5 @@
 package com.projectmain.project.domain.entity;
 
-
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -10,11 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
-@Entity
-public class Options {
 
+@Entity
+public class Sub_Questions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,17 +23,15 @@ public class Options {
     @Embedded
     Audit audit = new Audit();
 
-    @Column(columnDefinition = "VARCHAR(50)")
-    private String optiontext;
+    @Column(columnDefinition = "TEXT")
+    private String subquestiontext;
 
-    @OneToMany(mappedBy = "options" , cascade =  CascadeType.ALL)
-    private List<category_options> Category_Options;
+    @ManyToOne
+    @JoinColumn(name = "subquestion_id")
+    private Questions questions;
 
-    @OneToMany(mappedBy = "options", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sub_Questions", cascade = CascadeType.ALL)
     private List<Option_Questions> option_Questions;
-    
-    public Options() {
-    }
 
     public Long getId() {
         return id;
@@ -50,20 +49,20 @@ public class Options {
         this.audit = audit;
     }
 
-    public String getOptiontext() {
-        return optiontext;
+    public String getSubquestiontext() {
+        return subquestiontext;
     }
 
-    public void setOptiontext(String optiontext) {
-        this.optiontext = optiontext;
+    public void setSubquestiontext(String subquestiontext) {
+        this.subquestiontext = subquestiontext;
     }
 
-    public List<category_options> getCategory_Options() {
-        return Category_Options;
+    public Questions getQuestions() {
+        return questions;
     }
 
-    public void setCategory_Options(List<category_options> category_Options) {
-        Category_Options = category_Options;
+    public void setQuestions(Questions questions) {
+        this.questions = questions;
     }
 
     public List<Option_Questions> getOption_Questions() {
@@ -73,11 +72,5 @@ public class Options {
     public void setOption_Questions(List<Option_Questions> option_Questions) {
         this.option_Questions = option_Questions;
     }
-
     
-    
-    
-    
-
-
 }
