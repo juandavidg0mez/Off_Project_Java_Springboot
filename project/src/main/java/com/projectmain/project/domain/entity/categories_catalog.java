@@ -14,8 +14,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
+
+import io.micrometer.common.lang.NonNull;
 
 @Entity
 public class categories_catalog {
@@ -26,6 +29,8 @@ public class categories_catalog {
     @Embedded
     Audit audit = new Audit();
 
+    @NonNull
+    @NotEmpty(message = "Recuerda Rellenar estos Canmpos")
     @Column(columnDefinition = "VARCHAR(225)")
     private String name;
 
