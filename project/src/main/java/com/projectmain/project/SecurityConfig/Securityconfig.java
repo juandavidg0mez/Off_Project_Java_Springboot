@@ -14,7 +14,7 @@ public class Securityconfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity  http) throws Exception{
         return http.authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/adimPermisos").permitAll()
+                .requestMatchers("/adimPermisos/**").permitAll()
                 .anyRequest().authenticated())
                 .csrf(config -> config.disable())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

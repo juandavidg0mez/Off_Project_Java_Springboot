@@ -12,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -20,16 +22,21 @@ public class Surveys {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    
     @Column(columnDefinition = "VARCHAR(20)")
     private String compenenthtml;
 
     @Column(columnDefinition = "VARCHAR(20)")
     private String componentreact;
 
+    @NotEmpty
+    @NotNull(message = "Falta Descripcion para guardar")
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @NotEmpty
+    @NotNull(message = "Ten encuenta que para para guardar La encuenta debe tener un nombre")
     @Column(columnDefinition = "TEXT")
     private String name;
 
