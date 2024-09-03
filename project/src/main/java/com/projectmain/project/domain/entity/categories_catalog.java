@@ -48,6 +48,8 @@ public class categories_catalog {
     public categories_catalog() {
     }
 
+
+
     public Long getId() {
         return id;
     }

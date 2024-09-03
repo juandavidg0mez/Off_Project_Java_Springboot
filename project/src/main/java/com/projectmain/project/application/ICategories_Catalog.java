@@ -13,4 +13,6 @@ public interface ICategories_Catalog {
     categories_catalog save(categories_catalog CategoriaSurveys);
     Optional<categories_catalog>  update(Long id,categories_catalog CategoriaSurveys);
     Optional<categories_catalog> deleteById(Long id);
+    Optional<categories_catalog> findById(Long id);
+    List<Object[]> getCategoryAndSurveyNames(Long id);
 }
