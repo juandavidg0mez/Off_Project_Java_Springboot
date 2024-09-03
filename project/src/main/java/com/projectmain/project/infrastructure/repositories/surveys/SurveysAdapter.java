@@ -11,6 +11,7 @@ import com.projectmain.project.application.ISurveysService;
 import com.projectmain.project.domain.entity.Surveys;
 
 
+
 @Service
 public class SurveysAdapter implements ISurveysService{
     @Autowired
@@ -22,6 +23,9 @@ public class SurveysAdapter implements ISurveysService{
 
         return (List<Surveys>)surveysRepository.findAll();
     }
+
+   
+    
 
     @Override
     @Transactional
@@ -61,6 +65,17 @@ public class SurveysAdapter implements ISurveysService{
             }
         
             return surveysOptional;
+    }
+
+
+    @Override
+    public Optional<Surveys> findById(Long id) {
+        Optional<Surveys> SurveysOp = surveysRepository.findById(id);
+        SurveysOp.ifPresent(surveysDB -> {
+            surveysRepository.findById(id);
+        });
+
+        return SurveysOp;
     }
 
 

@@ -4,17 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.projectmain.project.application.ICategories_Catalog;
 import com.projectmain.project.domain.entity.categories_catalog;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class Categories_CatalogAdapter implements ICategories_Catalog{
     @Autowired
     private Categories_CatalogRepository catalogRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<categories_catalog> findAll() {
         return catalogRepository.findAll();
@@ -38,11 +40,35 @@ public class Categories_CatalogAdapter implements ICategories_Catalog{
         return cOptional;
         
     }
+
+
     @Transactional
     @Override
     public Optional<categories_catalog> deleteById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+        
+        Optional<categories_catalog> CategoriaSurveysOptional = catalogRepository.findById(id);
+        if (CategoriaSurveysOptional.isPresent()) {
+            catalogRepository.deleteById(id);
+            return CategoriaSurveysOptional;
+        }
+        return Optional.empty();
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<categories_catalog> findById(Long id) {
+        Optional<categories_catalog> CatalogOptional = catalogRepository.findById(id);
+        CatalogOptional.ifPresent(CatalogDB ->{
+            catalogRepository.findById(id);
+        });
+        return CatalogOptional;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Object[]> getCategoryAndSurveyNames(Long id) {
+        return catalogRepository.findCategoryAndSurveyNamesById(id);
+    }
+        
 
 }

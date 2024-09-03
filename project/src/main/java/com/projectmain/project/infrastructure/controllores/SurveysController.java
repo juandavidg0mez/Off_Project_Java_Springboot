@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ import com.projectmain.project.domain.entity.Surveys;
 
 import jakarta.validation.Valid;
 
-
 @RestController
 @RequestMapping("/adimPermisos/Surveys")
 public class SurveysController {
@@ -33,46 +31,57 @@ public class SurveysController {
     private ISurveysService iSurveysService;
 
     @GetMapping
-    public List<Surveys> findAll(){
-        return iSurveysService.findAll();
+    public ResponseEntity<List<Surveys>> findAll() {
+        List<Surveys> surveys = iSurveysService.findAll();
+        return ResponseEntity.ok(surveys);
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody Surveys surveys, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody Surveys surveys, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(iSurveysService.save(surveys));
-    
+
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<Surveys> surOptional = iSurveysService.DeleteById(id);
-        if(surOptional.isPresent()){
+        if (surOptional.isPresent()) {
             return ResponseEntity.ok(surOptional.orElseThrow());
-
 
         }
         return ResponseEntity.notFound().build();
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody Surveys surveys, BindingResult result, @PathVariable Long id){
-        if(result.hasFieldErrors()){
+    @PutMapping("/adimPermisos/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody Surveys surveys, BindingResult result, @PathVariable Long id) {
+        if (result.hasFieldErrors()) {
             return validation(result);
         }
         Optional<Surveys> sOptional = iSurveysService.update(id, surveys);
-        if(sOptional.isPresent()){
+        if (sOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(sOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/{id}")
+    private ResponseEntity<?> findById(@PathVariable Long id) {
+        Optional<Surveys> surOptional = iSurveysService.findById(id);
+        if (surOptional.isPresent()) {
+            return ResponseEntity.ok(surOptional.get());
 
-     private ResponseEntity<?> validation(BindingResult result) {
+        }
+
+        return ResponseEntity.notFound().build();
+
+    }
+
+    private ResponseEntity<?> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
 
         result.getFieldErrors().forEach(err -> {
